@@ -166,7 +166,7 @@ final class WP_Blog_Meta_DB {
 	/**
 	 * Clear meta for a site when it's deleted
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param int $site_id Site being deleted
 	 */
