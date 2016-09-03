@@ -19,6 +19,26 @@ defined( 'ABSPATH' ) || exit;
 class WP_Blog_Meta_Query {
 
 	/**
+	 * Array of columns frow `wp_blogs` to prefix
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var array
+	 */
+	private $columns = array(
+		'blog_id',
+		'site_id',
+		'domain',
+		'path',
+		'registered',
+		'public',
+		'archived',
+		'mature',
+		'spam',
+		'deleted'
+	);
+
+	/**
 	 * Pointer to WordPress Database object
 	 *
 	 * @since 1.0.0
@@ -98,10 +118,12 @@ class WP_Blog_Meta_Query {
 			$clauses['join']  .= $meta_clauses['join'];
 			$clauses['where'] .= $meta_clauses['where'];
 
-			// Mutate
-			$clauses['fields'] = $this->mutate_fields( $clauses['fields'] );
-			$clauses['join']   = $this->mutate_join( $clauses['join'] );
-			$clauses['where']  = $this->mutate_where( $clauses['where'] );
+			// Mutate clauses
+			$clauses['join']    = $this->mutate_join( $clauses['join'] );
+			$clauses['join']    = $this->mutate_columns( $clauses['join']    );
+			$clauses['fields']  = $this->mutate_columns( $clauses['fields']  );
+			$clauses['where']   = $this->mutate_columns( $clauses['where']   );
+			$clauses['orderby'] = $this->mutate_columns( $clauses['orderby'] );
 		}
 
 		// Return possibly modified clauses
@@ -109,54 +131,43 @@ class WP_Blog_Meta_Query {
 	}
 
 	/**
-	 * @since 0.1.0
+	 * Add table name to join section
 	 *
-	 * @global WPDB $wpdb
+	 * @since 1.0.0
 	 *
-	 * @param string $fields
+	 * @param string $join
 	 *
 	 * @return string
 	 */
-	public function mutate_fields( $fields = '' ) {
-
-		// Columns
-		$fields = str_replace( 'blog_id',    'b.blog_id',    $fields );
-		$fields = str_replace( 'site_id',    'b.site_id',    $fields );
-		$fields = str_replace( 'registered', 'b.registered', $fields );
-		$fields = str_replace( 'path',       'b.path',       $fields );
-		$fields = str_replace( 'domain',     'b.domain',     $fields );
-		$fields = str_replace( 'archived',   'b.archived',   $fields );
-		$fields = str_replace( 'mature',     'b.mature',     $fields );
-		$fields = str_replace( 'spam',       'b.spam',       $fields );
-		$fields = str_replace( 'deleted',    'b.deleted',    $fields );
-
-		// Table
-		$fields = str_replace( $this->db->blogs, 'b', $fields );
-
-		return $fields;
-	}
-
 	public function mutate_join( $join = '' ) {
-		return 'b'. $join;
+		return "b{$join}";
 	}
 
-	public function mutate_where( $where = '' ) {
+	/**
+	 * Add table name to `wp_blogs` columns
+	 *
+	 * @since 1.0.1
+	 *
+	 * @param string $section
+	 *
+	 * @return string
+	 */
+	public function mutate_columns( $section = '' ) {
 
-		// Columns
-		$where = str_replace( 'blog_id',    'b.blog_id',    $where );
-		$where = str_replace( 'site_id',    'b.site_id',    $where );
-		$where = str_replace( 'registered', 'b.registered', $where );
-		$where = str_replace( 'path',       'b.path',       $where );
-		$where = str_replace( 'domain',     'b.domain',     $where );
-		$where = str_replace( 'archived',   'b.archived',   $where );
-		$where = str_replace( 'mature',     'b.mature',     $where );
-		$where = str_replace( 'spam',       'b.spam',       $where );
-		$where = str_replace( 'deleted',    'b.deleted',    $where );
+		// Replace full-word database table
+		$section = preg_replace( "/\b{$this->db->blogs}\b/", 'b', $section );
 
-		// Table
-		$where = str_replace( $this->db->blogs, 'b', $where );
+		// Replace full-word column names
+		foreach ( $this->columns as $column ) {
+			$section = preg_replace( "/\b{$column}\b/", "b.{$column}", $section );
+		}
 
-		return $where;
+		// Clean-up maybe broken MySQL
+		$section = str_replace( "{$this->db->blogmeta}.b.", "{$this->db->blogmeta}.", $section );
+		$section = str_replace(  'b.b.', 'b.', $section );
+
+		// Return maybe-replaced section of the database query
+		return $section;
 	}
 }
 new WP_Blog_Meta_Query();
