@@ -113,7 +113,7 @@ final class WP_Blog_Meta_DB {
 
 		// Bail if no upgrade needed
 		if ( version_compare( (int) $old_version, $this->db_version, '>=' ) ) {
-			//return;
+			return;
 		}
 
 		// Create meta table
