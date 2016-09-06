@@ -1,0 +1,17 @@
+{
+  "name": "stuttter/wp-blog-meta",
+  "description": "A global, joinable meta-data table for your WordPress Multisite sites",
+  "homepage": "https://chat.flox.io/support/channels/wp-blog-meta",
+  "type": "wordpress-plugin",
+  "require": {
+    "php": ">=5.2",
+    "composer/installers": "^1.0"
+  },
+  "license": "GPLv2 or later",
+  "authors": [
+    {
+      "name": "John James Jacoby",
+      "email": "johnjamesjacoby@me.com"
+    }
+  ]
+}
