@@ -7,10 +7,20 @@ A global, joinable meta-data table for your WordPress Multisite sites
 
 # Installation
 
+## WordPress
+
+Must be installed **from main network** to ensure fully activation :
+
 * Download and install using the built in WordPress plugin installer
 * Network Activate in the "Plugins" area of your network-admin by clicking the "Activate" link
 * Optionally drop the entire `wp-blog-meta` directory into `mu-plugins`
 * No further setup or configuration is necessary
+
+## Composer 
+
+Add the repository source : `{ "type": "vcs", "url": "https://github.com/BeAPI/disable-srcset" }`
+
+And include `"stuttter/wp-blog-meta": "dev-master"` into your composer file.
 
 # FAQ
 
