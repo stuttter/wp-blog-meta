@@ -116,8 +116,17 @@ final class WP_Blog_Meta_DB {
 			return;
 		}
 
-		// Create meta table
-		$this->create_table();
+		// First activation
+		if ( ! $this->table_exists() ) {
+			// Create meta table
+			$this->create_table();
+		} elseif ( version_compare( (int) $old_version, 201609020003, '<=' ) ) {
+			// Update database structure from 1.0.1 to 1.1.0
+			$this->update_database_1_1();
+		} else {
+			// Other case without any action
+			return;
+		}
 
 		// Update the DB version
 		update_network_option( -1, $this->db_version_key, $this->db_version );
