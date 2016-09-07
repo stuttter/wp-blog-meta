@@ -24,7 +24,7 @@ final class WP_Blog_Meta_DB {
 	/**
 	 * @var string Database version
 	 */
-	public $db_version = 201609020003;
+	public $db_version = 201609070001;
 
 	/**
 	 * @var string Database version key
