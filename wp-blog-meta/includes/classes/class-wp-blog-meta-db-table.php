@@ -189,6 +189,21 @@ final class WP_Blog_Meta_DB {
 
 		return ! empty( $table_exist );
 	}
+
+	/**
+	 * Update database structure for version 1.1.0
+	 *
+	 * @since 1.1.0
+	 *
+	 * @author Maxime CULEA
+	 */
+	private function update_database_1_1() {
+		// Relationship meta
+		$this->db->query( "ALTER TABLE {$this->db->blogmeta} CHANGE `id` `meta_id` BIGINT(20) NOT NULL AUTO_INCREMENT;" );
+
+		// Make doubly sure the global database object is modified
+		$this->add_table_to_db_object();
+	}
 }
 
 /**
