@@ -175,6 +175,20 @@ final class WP_Blog_Meta_DB {
 			'blog_id' => $site_id
 		), array( '%d' ) );
 	}
+
+	/**
+	 * Check if table already exists
+	 *
+	 * @since 1.1.0
+	 *
+	 * @return bool
+	 * @author Maxime CULEA
+	 */
+	private function table_exists() {
+		$table_exist = $this->db->get_var( $this->db->prepare( "SHOW TABLES LIKE %s", $this->db->esc_like( $this->db->blogmeta ) ) );
+
+		return ! empty( $table_exist );
+	}
 }
 
 /**
