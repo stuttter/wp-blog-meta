@@ -149,7 +149,7 @@ final class WP_Blog_Meta_DB {
 
 		// Relationship meta
 		$sql[] = "CREATE TABLE {$this->db->blogmeta} (
-			id bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+			meta_id bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 			blog_id bigint(20) NOT NULL,
 			meta_key varchar(255) DEFAULT NULL,
 			meta_value longtext DEFAULT NULL,
