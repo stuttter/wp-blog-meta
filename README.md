@@ -37,7 +37,8 @@ No. All of WordPress's core database tables remain untouched.
 
 ### Where can I get support?
 
-The WordPress support forums: https://chat.flox.io/support/channels/wp-blog-meta
+* Basic: https://wordpress.org/support/plugin/wp-blog-meta/
+* Priority: https://chat.flox.io/support/channels/wp-blog-meta/
 
 ### Can I contribute?
 
