@@ -8,7 +8,7 @@
  * License:     GPLv2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Description: A global, joinable meta-data table for your WordPress Multisite sites
- * Version:     1.0.1
+ * Version:     1.1.0
  * Text Domain: wp-blog-meta
  * Domain Path: /assets/lang/
  */

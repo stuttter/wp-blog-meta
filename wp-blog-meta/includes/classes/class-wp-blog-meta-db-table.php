@@ -19,7 +19,7 @@ final class WP_Blog_Meta_DB {
 	/**
 	 * @var string Plugin version
 	 */
-	public $version = '1.0.1';
+	public $version = '1.1.0';
 
 	/**
 	 * @var string Database version
