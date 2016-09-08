@@ -108,6 +108,11 @@ final class WP_Blog_Meta_DB {
 	 */
 	private function upgrade_database( $old_version = 0 ) {
 
+		// Bail if upgrading global tables is not allowed
+		if ( ! wp_should_upgrade_global_tables() ) {
+			return;
+		}
+
 		// Get current version
 		$old_version = get_network_option( -1, $this->db_version_key );
 
@@ -129,6 +134,7 @@ final class WP_Blog_Meta_DB {
 	 * @since 1.0.0
 	 */
 	private function create_table() {
+		$this->add_table_to_db_object();
 
 		$charset_collate = '';
 		if ( ! empty( $this->db->charset ) ) {
@@ -158,9 +164,6 @@ final class WP_Blog_Meta_DB {
 		) {$charset_collate};";
 
 		dbDelta( $sql );
-
-		// Make doubly sure the global database object is modified
-		$this->add_table_to_db_object();
 	}
 
 	/**
@@ -171,6 +174,7 @@ final class WP_Blog_Meta_DB {
 	 * @param int $site_id Site being deleted
 	 */
 	public function delete_blog( $site_id = 0 ) {
+		$this->add_table_to_db_object();
 		$this->db->delete( $this->db->blogmeta, array(
 			'blog_id' => $site_id
 		), array( '%d' ) );
