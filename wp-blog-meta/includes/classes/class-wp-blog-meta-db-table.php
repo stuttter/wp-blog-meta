@@ -108,16 +108,21 @@ final class WP_Blog_Meta_DB {
 	 */
 	private function upgrade_database( $old_version = 0 ) {
 
-		// Bail if upgrading global tables is not allowed
-		if ( ! wp_should_upgrade_global_tables() ) {
-			return;
-		}
-
 		// Get current version
 		$old_version = get_network_option( -1, $this->db_version_key );
 
 		// Bail if no upgrade needed
 		if ( version_compare( (int) $old_version, $this->db_version, '>=' ) ) {
+			return;
+		}
+
+		// Check for `dbDelta`
+		if ( ! function_exists( 'dbDelta' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+		}
+
+		// Bail if upgrading global tables is not allowed
+		if ( ! wp_should_upgrade_global_tables() ) {
 			return;
 		}
 
@@ -143,11 +148,6 @@ final class WP_Blog_Meta_DB {
 
 		if ( ! empty( $this->db->collate ) ) {
 			$charset_collate .= " COLLATE {$this->db->collate}";
-		}
-
-		// Check for `dbDelta`
-		if ( ! function_exists( 'dbDelta' ) ) {
-			require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 		}
 
 		$sql = array();
