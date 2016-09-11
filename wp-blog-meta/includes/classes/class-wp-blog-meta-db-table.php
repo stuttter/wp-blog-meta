@@ -19,12 +19,12 @@ final class WP_Blog_Meta_DB {
 	/**
 	 * @var string Plugin version
 	 */
-	public $version = '1.0.1';
+	public $version = '2.0.0';
 
 	/**
 	 * @var string Database version
 	 */
-	public $db_version = 201609020003;
+	public $db_version = 201609100001;
 
 	/**
 	 * @var string Database version key
@@ -126,8 +126,18 @@ final class WP_Blog_Meta_DB {
 			return;
 		}
 
-		// Create meta table
-		$this->create_table();
+		// First activation
+		if ( ! $this->table_exists() ) {
+			$this->create_table();
+
+		// Update database structure from 1.0.1 to 2.0.0
+		} elseif ( version_compare( (int) $old_version, 201609100001, '<=' ) ) {
+			$this->update_database_2_0();
+
+		// Other case without any action
+		} else {
+			return;
+		}
 
 		// Update the DB version
 		update_network_option( -1, $this->db_version_key, $this->db_version );
@@ -155,7 +165,7 @@ final class WP_Blog_Meta_DB {
 
 		// Relationship meta
 		$sql[] = "CREATE TABLE {$this->db->blogmeta} (
-			id bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+			meta_id bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 			blog_id bigint(20) NOT NULL,
 			meta_key varchar(255) DEFAULT NULL,
 			meta_value longtext DEFAULT NULL,
@@ -178,6 +188,36 @@ final class WP_Blog_Meta_DB {
 		$this->db->delete( $this->db->blogmeta, array(
 			'blog_id' => $site_id
 		), array( '%d' ) );
+	}
+
+	/**
+	 * Check if table already exists
+	 *
+	 * @since 2.0.0
+	 *
+	 * @return bool
+	 */
+	private function table_exists() {
+		$query       = "SHOW TABLES LIKE %s";
+		$like        = $this->db->esc_like( $this->db->blogmeta );
+		$prepared    = $this->db->prepare( $query, $like );
+		$table_exist = $this->db->get_var( $prepared );
+
+		return ! empty( $table_exist );
+	}
+
+	/**
+	 * Update database structure for version 2.0.0
+	 *
+	 * @since 2.0.0
+	 */
+	private function update_database_2_0() {
+
+		// Relationship meta
+		$this->db->query( "ALTER TABLE {$this->db->blogmeta} CHANGE `id` `meta_id` BIGINT(20) NOT NULL AUTO_INCREMENT;" );
+
+		// Make doubly sure the global database object is modified
+		$this->add_table_to_db_object();
 	}
 }
 

@@ -3,7 +3,7 @@ Contributors: johnjamesjacoby, stuttter
 Tags: blog, site, meta, multisite
 Requires at least: 4.5
 Tested up to: 4.7
-Stable tag: 1.0.0
+Stable tag: 2.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=9Q4F4EL5YJ62J
@@ -71,6 +71,9 @@ No. All of WordPress's core database tables remain untouched.
 http://github.com/stuttter/wp-blog-meta/
 
 == Changelog ==
+
+= [2.0.0] - 2016-09-10 =
+* Update meta table key column name
 
 = [1.0.0] - 2016-09-07 =
 * Initial release
