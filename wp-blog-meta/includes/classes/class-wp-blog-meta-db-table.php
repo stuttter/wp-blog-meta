@@ -198,6 +198,8 @@ final class WP_Blog_Meta_DB {
 	 * @return bool
 	 */
 	private function table_exists() {
+		$this->add_table_to_db_object();
+
 		$query       = "SHOW TABLES LIKE %s";
 		$like        = $this->db->esc_like( $this->db->blogmeta );
 		$prepared    = $this->db->prepare( $query, $like );
@@ -212,12 +214,10 @@ final class WP_Blog_Meta_DB {
 	 * @since 2.0.0
 	 */
 	private function update_database_2_0() {
+		$this->add_table_to_db_object();
 
 		// Relationship meta
 		$this->db->query( "ALTER TABLE {$this->db->blogmeta} CHANGE `id` `meta_id` BIGINT(20) NOT NULL AUTO_INCREMENT;" );
-
-		// Make doubly sure the global database object is modified
-		$this->add_table_to_db_object();
 	}
 }
 
