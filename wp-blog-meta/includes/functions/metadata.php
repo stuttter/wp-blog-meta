@@ -75,3 +75,17 @@ function get_blog_meta( $id, $meta_key = '', $single = false ) {
 function update_blog_meta( $id, $meta_key, $meta_value, $prev_value = '' ) {
 	return update_metadata( 'blog', $id, $meta_key, $meta_value, $prev_value );
 }
+
+/**
+ * Updates metadata cache for list of blog IDs.
+ *
+ * Performs SQL query to retrieve all metadata for the blogs matching `$blog_ids` and stores them in the cache.
+ * Subsequent calls to `get_blog_meta()` will not need to query the database.
+ *
+ * @since 1.1.0
+ * @param array $blog_ids List of blog IDs.
+ * @return array|false Returns false if there is nothing to update. Returns an array of metadata on success.
+ */
+function update_blogmeta_cache( $blog_ids ) {
+	return update_meta_cache( 'blog', $blog_ids );
+}
