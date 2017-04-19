@@ -58,7 +58,7 @@ class WP_Blog_Meta_Query {
 		add_action( 'parse_site_query', array( $this, 'parse_site_query' ) );
 		add_action( 'pre_get_sites',    array( $this, 'pre_get_sites'    ) );
 		add_action( 'sites_clauses',    array( $this, 'sites_clauses'    ), 10, 2 );
-		add_filter( 'the_sites',        array( $this, 'the_sites' ) );
+		add_filter( 'the_sites',        array( $this, 'the_sites' ), 10, 2 );
 	}
 
 	/**
@@ -177,14 +177,15 @@ class WP_Blog_Meta_Query {
 
 	/**
 	 * @since 1.1.0
-	 * @param $args
+	 * @param $_sites
+	 * @param $site_query
+	 * @return $_sites
 	 */
-	public function the_sites( $args ){
-		$_sites = array_shift( $args );
-		$site_query = array_shift( $args );
+	public function the_sites( $_sites, $site_query ){
 		if ( $site_query->query_var_defaults['update_blog_meta_cache']  ) {
 			update_blogmeta_cache( wp_list_pluck( $_sites, 'id' ) );
 		}
+		return $_sites;
 	}
 }
 new WP_Blog_Meta_Query();
