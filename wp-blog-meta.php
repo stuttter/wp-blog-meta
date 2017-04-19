@@ -33,6 +33,11 @@ function _wp_blog_meta() {
 	require_once $plugin_path . 'includes/classes/class-wp-blog-meta-query.php';
 	require_once $plugin_path . 'includes/classes/class-wp-blog-meta-db-table.php';
 
+	// WP_CLI
+	if ( defined( 'WP_CLI' ) && WP_CLI ) {
+		require_once $plugin_path . 'includes/classes/class-wp-cli.php';
+	}
+
 	// Functions
 	require_once $plugin_path . 'includes/functions/metadata.php';
 	require_once $plugin_path . 'includes/functions/transients.php';
