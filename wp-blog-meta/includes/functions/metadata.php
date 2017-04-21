@@ -16,7 +16,12 @@ defined( 'ABSPATH' ) || exit;
  * @return int|false Meta ID on success, false on failure.
  */
 function add_blog_meta( $id, $meta_key, $meta_value, $unique = false ) {
-	return add_metadata( 'blog', $id, $meta_key, $meta_value, $unique );
+	$added = add_metadata( 'blog', $id, $meta_key, $meta_value, $unique );
+	// Bust site query cache.
+	if ( $added ) {
+		wp_cache_set( 'last_changed', microtime(), 'sites' );
+	}
+	return $added;
 }
 
 /**
@@ -35,7 +40,12 @@ function add_blog_meta( $id, $meta_key, $meta_value, $unique = false ) {
  * @return bool True on success, false on failure.
  */
 function delete_blog_meta( $id, $meta_key, $meta_value = '' ) {
-	return delete_metadata( 'blog', $id, $meta_key, $meta_value );
+	$deleted = delete_metadata( 'blog', $id, $meta_key, $meta_value );
+	// Bust site query cache.
+	if ( $deleted ) {
+		wp_cache_set( 'last_changed', microtime(), 'sites' );
+	}
+	return $deleted;
 }
 
 /**
@@ -73,7 +83,12 @@ function get_blog_meta( $id, $meta_key = '', $single = false ) {
  *                  false on failure.
  */
 function update_blog_meta( $id, $meta_key, $meta_value, $prev_value = '' ) {
-	return update_metadata( 'blog', $id, $meta_key, $meta_value, $prev_value );
+	$updated = update_metadata( 'blog', $id, $meta_key, $meta_value, $prev_value );
+	// Bust site query cache.
+	if ( $updated ) {
+		wp_cache_set( 'last_changed', microtime(), 'sites' );
+	}
+	return $updated;
 }
 
 /**
