@@ -46,7 +46,7 @@ function _wp_blog_meta() {
 
 	// Register global cache group
 	if ( function_exists( 'wp_cache_add_global_groups' ) ) {
-		wp_cache_add_global_groups( array( 'blog_meta' ) );
+		wp_cache_add_global_groups( array( 'blog_meta', 'blog-transient' ) );
 	}
 }
 
