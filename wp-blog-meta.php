@@ -36,6 +36,7 @@ function _wp_blog_meta() {
 	// Functions
 	require_once $plugin_path . 'includes/functions/metadata.php';
 	require_once $plugin_path . 'includes/functions/transients.php';
+	require_once $plugin_path . 'includes/functions/filters.php';
 
 	// Register database table
 	if ( empty( $GLOBALS['wpdb']->blogmeta ) ) {
