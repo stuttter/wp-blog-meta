@@ -5,8 +5,6 @@
  * also clean blog meta
  *
  * @since 2.0.0
- *
- * @return string
  */
 function wp_blog_meta_clean_site_cache( $blog_id ) {
 	wp_cache_delete( $blog_id, 'blog_meta' );
